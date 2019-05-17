@@ -1,10 +1,10 @@
 CC=gcc
-CFLAGS=-Wall -g -O3
+CFLAGS=-Wall -g3
 
 all: main
 
-main: tcp.c #muss vorhanden sein
-	$(CC) -o tcp.o tcp.c
+main: tcphandler.h util.h config.h #muss vorhanden sein
+	$(CC) -o hue.o hue.c
 
 run: tcp.o # -""-
 	./cursehue
