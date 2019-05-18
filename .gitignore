@@ -1,3 +1,5 @@
 _other/
 privconfig.h
 *.o
+vgcore.*
+hue
