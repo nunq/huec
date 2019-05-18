@@ -6,29 +6,30 @@
 //before exit close(sockfdA); in main()
 //and free();
 //
-char matched[128];
 
 char *getProp(const char *property, char *source) {
+  char *clean;
+  char *pattern;
+  char buffer[128];
+  char matched[128];
+  char prematched[128];
+  int retval;
   regex_t regex;
   regmatch_t pmatch[2];
-  int retval;
-  char buffer[128];
-  char prematched[128];
   size_t nmatch = 2;
-  char *pattern;
   
-  /*char pattern[32];
-  // "\"XX\"\:.*?,"
+  char firstpattern[32]; //buffer
+  char *patternstr = "\\\"\\\":[^,]*";
   int offset = 2;
 
-  strncpy(pattern, patternstr, offset);
-  pattern[offset] = '\0';
-  strcat(pattern, property);
-  strcat(pattern, patternstr + offset);*/
+  strncpy(firstpattern, patternstr, offset);
+  firstpattern[offset] = '\0';
+  strcat(firstpattern, property);
+  strcat(firstpattern, patternstr + offset);
 
-  pattern = "\"on\":[^,]*";
+  //pattern = "\"on\":[^,]*";
 
-  if ( (retval = regcomp(&regex, pattern, REG_EXTENDED) != 0)) {
+  if ( (retval = regcomp(&regex, firstpattern, REG_EXTENDED) != 0)) {
     regerror(retval, &regex, buffer, sizeof(buffer));
     fprintf(stderr, "regcomp error: %s\n", buffer);
     exit(-1);
@@ -41,10 +42,7 @@ char *getProp(const char *property, char *source) {
   }
 
   snprintf(prematched, 128, "%.*s", pmatch[0].rm_eo - pmatch[0].rm_so, &source[pmatch[0].rm_so]);   
-
-  
   regfree(&regex);
-
 
 
   pattern = ":.*";
@@ -62,8 +60,9 @@ char *getProp(const char *property, char *source) {
   }
 
   snprintf(matched, 128, "%.*s", pmatch[0].rm_eo - pmatch[0].rm_so, &prematched[pmatch[0].rm_so]);   
-  
   regfree(&regex);
 
-  return matched;
+  clean = matched + 1;
+
+  return clean;
 }
