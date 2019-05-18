@@ -28,7 +28,7 @@ int createSocket() {
   servaddr.sin_port   = htons(HUE_PORT);
   if (inet_pton(AF_INET, HUE_IP_ADDR, &servaddr.sin_addr) <= 0)
     error("converting (inet_pton)");
-  if (connect(sockfd, servaddr.sin_addr, sizeof(servaddr)) < 0)
+  if (connect(sockfd, (struct servaddr *) &servaddr, sizeof(servaddr)) < 0)
     error("connecting to bridge");
   return 0;
 }
