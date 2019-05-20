@@ -1,27 +1,14 @@
 #include <stdio.h>
 
-#include "tcphandler.h"
-#include "config.h"
-#include "privconfig.h"
-#include "extract.h"
+#include "comms.h"
 
 int main() {
 
-  char req[MAXLINE];
-  char *action = "lights";
-  char *response;
-  char *prop;
+  printf("%s\n",  getProp(1, "on"));
 
-  createSocket();
+  printf("%d\n", setProp("PUT", 1, "state", "on", "true"));
 
-  sprintf(req, "GET /api/%s/%s\r\n\r\n", TOKEN, action);
-
-  if ( (response = sendRequest(req)) == "")
-    error("response is empty");
-
-  prop = getProp("on", response);
-
-  printf("%s\n", prop);
+  close(sockfd);
 
   return 0;
 }

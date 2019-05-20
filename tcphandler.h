@@ -10,10 +10,9 @@
 #include "config.h"
 #include "util.h"
 
-int sockfd, n;
 struct sockaddr_in servaddr;
-char recvdata[MAXLINE];
-//char *request;
+static char recvdata[MAXLINE];
+static int sockfd;
 
 int createSocket() {
 
@@ -28,23 +27,19 @@ int createSocket() {
   servaddr.sin_port   = htons(HUE_PORT);
   if (inet_pton(AF_INET, HUE_IP_ADDR, &servaddr.sin_addr) <= 0)
     error("converting (inet_pton)");
-  if (connect(sockfd, (struct servaddr *) &servaddr, sizeof(servaddr)) < 0)
+  if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0)
     error("connecting to bridge");
   return 0;
 }
 
-char *sendRequest(const char *request) {
+char *RequestHandler(const char *request) {
+
+  int n;
 
   if (write(sockfd, request, strlen(request)) != strlen(request))
     error("sending data");
   
-  //char *response = (char *) malloc(sizeof(recvdata));
-
-  while ((n = read(sockfd, recvdata, MAXLINE-1)) > 0) {
-    //printf("%s\n", recvdata); //only accessible from here?
-    //memset(recvdata, 0, MAXLINE);
-    //response = recvdata;
-  }
+  while ((n = read(sockfd, recvdata, MAXLINE-1)) > 0) {}
   if (n < 0)
     error("receiving data");
   return recvdata;
