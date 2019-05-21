@@ -68,7 +68,7 @@ char *getProp(const int light, const char *property) {
     return "no match";
   }
 
-  snprintf(prematched, 128, "%.*s", pmatch[0].rm_eo - pmatch[0].rm_so, &source[pmatch[0].rm_so]);
+  snprintf(prematched, 128, "%.*s", (int) pmatch[0].rm_eo - (int) pmatch[0].rm_so, &source[pmatch[0].rm_so]);
   regfree(&regex);
 
 
@@ -86,7 +86,7 @@ char *getProp(const int light, const char *property) {
     return "no match";
   }
 
-  snprintf(matched, 128, "%.*s", pmatch[0].rm_eo - pmatch[0].rm_so, &prematched[pmatch[0].rm_so]);
+  snprintf(matched, 128, "%.*s", (int) pmatch[0].rm_eo - (int) pmatch[0].rm_so, &prematched[pmatch[0].rm_so]);
   regfree(&regex);
 
   clean = matched + 1;
@@ -101,7 +101,7 @@ int setProp(const char *method, const int light, const char *action, const char 
   int retval;
   regex_t regex;
 
-  char *source = sendRequest("PUT", 1, action, 0, property, state);
+  char *source = sendRequest(method, light, action, 0, property, state);
 
   if ( (retval = regcomp(&regex, "success", 0) != 0)) {
     regerror(retval, &regex, buffer, sizeof(buffer));

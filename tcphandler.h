@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -35,8 +36,9 @@ int createSocket() {
 char *RequestHandler(const char *request) {
 
   int n;
+  unsigned long int w;
 
-  if (write(sockfd, request, strlen(request)) != strlen(request))
+  if ( (w = write(sockfd, request, strlen(request))) != strlen(request))
     error("sending data");
   
   while ((n = read(sockfd, recvdata, MAXLINE-1)) > 0) {}
