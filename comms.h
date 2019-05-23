@@ -6,8 +6,8 @@
 #include "tcphandler.h"
 #include "privconfig.h"
 
-char *sendRequest(const char *method, const int light, const char *action, const int nojson, const char *property, const char *state) {
-
+char *sendRequest(const char *method, const int light, const char *action, const int nojson, const char *property, const char *state)
+{
   char *response;
   char httpbody[256];
   char req[MAXLINE];
@@ -33,8 +33,8 @@ char *sendRequest(const char *method, const int light, const char *action, const
 }
 
 
-char *getProp(const int light, const char *property) {
-
+char *getProp(const int light, const char *property)
+{
   char *returned;
   char *source;
   char pattern[32]; //buffer
@@ -66,8 +66,8 @@ char *getProp(const int light, const char *property) {
 }
 
 
-int setProp(const char *method, const int light, const char *action, const char *property, const char *state) {
-
+int setProp(const char *method, const int light, const char *action, const char *property, const char *state)
+{
   char buffer[128];
   int retval;
   regex_t regex;
@@ -90,7 +90,8 @@ int setProp(const char *method, const int light, const char *action, const char 
   }
 }
 
-char *registerWithBridge() {
+char *registerWithBridge()
+{
 // runs on -r from cli.h
   char *response;
   char httpbody[256];

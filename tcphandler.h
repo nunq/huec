@@ -15,8 +15,8 @@ struct sockaddr_in servaddr;
 static char recvdata[MAXLINE];
 static int sockfd;
 
-int createSocket() {
-
+int createSocket()
+{
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sockfd < 0) {
     error("socket");
@@ -33,8 +33,8 @@ int createSocket() {
   return 0;
 }
 
-char *RequestHandler(const char *request) {
-
+char *RequestHandler(const char *request)
+{
   int n;
   unsigned long int w;
 

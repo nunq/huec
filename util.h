@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void error(const char *msg) {
-
+void error(const char *msg)
+{
   perror(msg);
   exit(-1);
 }
 
-char *regexMatch(const char *source, const char *pattern, const int returnMatched) {
-
+char *regexMatch(const char *source, const char *pattern, const int returnMatched)
+{
   char buffer[128];
   int retval;
   regex_t regex;
