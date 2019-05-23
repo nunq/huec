@@ -34,64 +34,35 @@ char *sendRequest(const char *method, const int light, const char *action, const
 
 
 char *getProp(const int light, const char *property) {
-  char *clean;
-  char *pattern;
-  char *source;
-  char buffer[128];
-  char prematched[128];
-  int retval;
-  regex_t regex;
-  regmatch_t pmatch[2];
-  size_t nmatch = 2;
-  static char matched[128];
 
-  char firstpattern[32]; //buffer
-  char *patternstr = "\\\"\\\":[^,]*";
+  char *returned;
+  char *source;
+  char pattern[32]; //buffer
   int offset = 2;
+  char *patternstr = "\\\"\\\":[^,]*";
 
   source = sendRequest("GET", light, "", 1, "", "");
 
-  strncpy(firstpattern, patternstr, offset);
-  firstpattern[offset] = '\0';
-  strcat(firstpattern, property);
-  strcat(firstpattern, patternstr + offset);
+  // insert property into pattern buffer
+  strncpy(pattern, patternstr, offset);
+  pattern[offset] = '\0';
+  strcat(pattern, property);
+  strcat(pattern, patternstr + offset);
 
-  if ( (retval = regcomp(&regex, firstpattern, REG_EXTENDED) != 0)) {
-    regerror(retval, &regex, buffer, sizeof(buffer));
-    fprintf(stderr, "regcomp error: %s\n", buffer);
-    exit(-1);
+  returned = regexMatch(source, pattern, 1);
+
+  if (strcmp(returned, "no match") == 0) {
+    return "regex match (1) failed";
   }
 
-  retval = regexec(&regex, source, nmatch, pmatch, REG_NOTBOL);
+  returned = regexMatch(returned, ":.*", 1);
 
-  if (retval == REG_NOMATCH) {
-    return "no match";
+  if (strcmp(returned, "no match") == 0) {
+    return "regex match (2) failed";
   }
 
-  snprintf(prematched, 128, "%.*s", (int) pmatch[0].rm_eo - (int) pmatch[0].rm_so, &source[pmatch[0].rm_so]);
-  regfree(&regex);
-
-
-  pattern = ":.*";
-
-  if ( (retval = regcomp(&regex, pattern, REG_EXTENDED) != 0)) {
-    regerror(retval, &regex, buffer, sizeof(buffer));
-    fprintf(stderr, "regcomp error: %s\n", buffer);
-    exit(-1);
-  }
-
-  retval = regexec(&regex, prematched, nmatch, pmatch, 0);
-
-  if (retval == REG_NOMATCH) {
-    return "no match";
-  }
-
-  snprintf(matched, 128, "%.*s", (int) pmatch[0].rm_eo - (int) pmatch[0].rm_so, &prematched[pmatch[0].rm_so]);
-  regfree(&regex);
-
-  clean = matched + 1;
-
-  return clean;
+  returned += 1;
+  return returned;
 }
 
 
@@ -116,5 +87,31 @@ int setProp(const char *method, const int light, const char *action, const char 
   }
   else {
     return 0;
+  }
+}
+
+char *registerWithBridge() {
+// runs on -r from cli.h
+  char *response;
+  char httpbody[256];
+  char req[MAXLINE];
+  int contlen;
+// for un, use huec-epochtime or prnged number set before as var
+  snprintf(httpbody, sizeof(httpbody), "{\"username\": \"huec demo\", \"devicetype\": \"huec demo device\"}");
+
+  contlen = strlen(httpbody);
+
+  createSocket();
+
+  // request builder
+  snprintf(req, sizeof(req), "POST /api HTTP/1.0\r\nContent-Length: %d\r\n\r\n%s\r\n", contlen, httpbody);
+
+  if (strcmp((response = RequestHandler(req)), "") == 0) {
+    return "sendRequest: response is empty";
+  }
+  else {
+  //match for "success", if matched
+  //fopen() put token in ./privconfig.h
+    return "test";
   }
 }
