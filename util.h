@@ -28,7 +28,7 @@ char *regexMatch(const char *source, const char *pattern, const int returnMatche
   }
 
   if (returnMatched == 1) {
-    snprintf(matched, 128, "%.*s", (int) pmatch[0].rm_eo - (int) pmatch[0].rm_so, &source[pmatch[0].rm_so]);
+    snprintf(matched, sizeof(matched), "%.*s", (int) pmatch[0].rm_eo - (int) pmatch[0].rm_so, &source[pmatch[0].rm_so]);
     regfree(&regex);
     return matched;
   }

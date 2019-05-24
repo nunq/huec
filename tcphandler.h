@@ -42,7 +42,9 @@ char *RequestHandler(const char *request)
     error("sending data");
   
   while ((n = read(sockfd, recvdata, MAXLINE-1)) > 0) {}
-  if (n < 0)
+  if (n < 0) {
     error("receiving data");
+  }
+  close(sockfd);
   return recvdata;
 }

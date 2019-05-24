@@ -32,7 +32,6 @@ char *sendRequest(const char *method, const int light, const char *action, const
   }
 }
 
-
 char *getProp(const int light, const char *property)
 {
   char *returned;
@@ -65,7 +64,6 @@ char *getProp(const int light, const char *property)
   return returned;
 }
 
-
 int setProp(const char *method, const int light, const char *action, const char *property, const char *state)
 {
   char buffer[128];
@@ -97,9 +95,9 @@ char *registerWithBridge()
   char httpbody[256];
   char req[MAXLINE];
   int contlen;
-// for un, use huec-epochtime or prnged number set before as var
-  snprintf(httpbody, sizeof(httpbody), "{\"username\": \"huec demo\", \"devicetype\": \"huec demo device\"}");
+  char *filtertoken;
 
+  snprintf(httpbody, sizeof(httpbody), "{\"devicetype\": \"huec-client#huec\"}");
   contlen = strlen(httpbody);
 
   createSocket();
@@ -108,11 +106,32 @@ char *registerWithBridge()
   snprintf(req, sizeof(req), "POST /api HTTP/1.0\r\nContent-Length: %d\r\n\r\n%s\r\n", contlen, httpbody);
 
   if (strcmp((response = RequestHandler(req)), "") == 0) {
-    return "sendRequest: response is empty";
+    return "registerWithBridge: response is empty";
   }
   else {
-  //match for "success", if matched
-  //fopen() put token in ./privconfig.h
-    return "test";
+    printf("HUE BRIDGE RESPONSE:\n\n%s\n\n\n", response);
+
+    filtertoken = regexMatch(response, "\"username\":\".*\"", 1);
+    if (strcmp(filtertoken, "no match") == 0) {
+      return "regex match for token (1) failed";
+    }
+
+    filtertoken = regexMatch(filtertoken, ":.*", 1);
+    if (strcmp(filtertoken, "no match") == 0) {
+      return "regex match for token (2) failed";
+    }
+
+    filtertoken += 1;
+
+    FILE *fp = fopen(PRIVCONFIGPATH, "w");
+
+    if (fp == NULL) {
+      return "fopen failed";
+    }
+
+    fprintf(fp, "#define TOKEN %s\n", filtertoken);
+    fclose(fp);
+
+    return "";
   }
 }

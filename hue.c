@@ -8,7 +8,5 @@ int main()
 
   printf("%d\n", setProp("PUT", 1, "state", "on", "true"));
 
-  close(sockfd);
-
   return 0;
 }
