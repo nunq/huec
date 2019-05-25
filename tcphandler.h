@@ -1,7 +1,5 @@
 #include <arpa/inet.h>
-#include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 #include <sys/socket.h>
@@ -17,6 +15,7 @@ static int sockfd;
 
 int createSocket()
 {
+  // setup socket
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sockfd < 0) {
     error("socket");
@@ -38,6 +37,7 @@ char *RequestHandler(const char *request)
   int n;
   unsigned long int w;
 
+  // tcp communication handling
   if ( (w = write(sockfd, request, strlen(request))) != strlen(request))
     error("sending data");
   

@@ -7,3 +7,4 @@
 // other
 #define MAXLINE 4096
 // for fopen()
+#define PRIVCONFIGPATH "/home/nils/code/huec/privconfig.h"

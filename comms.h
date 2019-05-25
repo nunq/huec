@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <regex.h>
-#include <stdlib.h>
-#include <sys/types.h>
 
 #include "tcphandler.h"
 #include "privconfig.h"
@@ -13,6 +10,7 @@ char *sendRequest(const char *method, const int light, const char *action, const
   char req[MAXLINE];
   int contlen;
 
+  // decide if json data should be included in the request
   if (nojson == 0) {
     snprintf(httpbody, sizeof(httpbody), "{\"%s\": %s}", property, state);
   }
@@ -50,6 +48,7 @@ char *getProp(const int light, const char *property)
 
   returned = regexMatch(source, pattern, 1);
 
+  // regex match target json data
   if (strcmp(returned, "no match") == 0) {
     return "regex match (1) failed";
   }
@@ -59,7 +58,7 @@ char *getProp(const int light, const char *property)
   if (strcmp(returned, "no match") == 0) {
     return "regex match (2) failed";
   }
-
+  // remove colon from string
   returned += 1;
   return returned;
 }
@@ -98,6 +97,7 @@ char *registerWithBridge()
   }
   else {
 
+    // regex match target json data
     filtertoken = regexMatch(response, "\"username\":\".*\"", 1);
     if (strcmp(filtertoken, "no match") == 0) {
       printf("%s\n", "regex match for token (1) failed");
@@ -110,6 +110,7 @@ char *registerWithBridge()
 
     filtertoken += 1;
 
+    // write token to privconfig.h
     FILE *fp = fopen(PRIVCONFIGPATH, "w");
 
     if (fp == NULL) {

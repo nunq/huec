@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     }
   }
 
+  // handle commandline arguments
   while ((opt = getopt(argc, argv, "rc:l:b:s:p:")) != -1) {
    switch (opt) {
    case 'l':
