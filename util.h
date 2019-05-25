@@ -18,12 +18,14 @@ char *regexMatch(const char *source, const char *pattern, const int returnMatche
 
   if ( (retval = regcomp(&regex, pattern, REG_EXTENDED) != 0)) {
     regerror(retval, &regex, buffer, sizeof(buffer));
+    regfree(&regex);
     return "ERR: regcomp failed";
   }
 
   retval = regexec(&regex, source, nmatch, pmatch, REG_NOTBOL);
 
   if (retval == REG_NOMATCH) {
+    regfree(&regex);
     return "no match";
   }
 
@@ -34,6 +36,6 @@ char *regexMatch(const char *source, const char *pattern, const int returnMatche
   }
   else {
     regfree(&regex);
-    return "success";
+    return "match found";
   }
 }

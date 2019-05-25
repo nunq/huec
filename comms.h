@@ -66,31 +66,19 @@ char *getProp(const int light, const char *property)
 
 int setProp(const char *method, const int light, const char *action, const char *property, const char *state)
 {
-  char buffer[128];
-  int retval;
-  regex_t regex;
-
   char *source = sendRequest(method, light, action, 0, property, state);
 
-  if ( (retval = regcomp(&regex, "success", 0) != 0)) {
-    regerror(retval, &regex, buffer, sizeof(buffer));
-    fprintf(stderr, "regcomp error: %s\n", buffer);
-    exit(-1);
-  }
-
-  retval = regexec(&regex, source, 0, NULL, 0);
-
-  if (retval == REG_NOMATCH) {
-    return 1;
+  if (strcmp(regexMatch(source, "success", 0), "match found") == 0) {
+    return 0;
   }
   else {
-    return 0;
+    return 1;
   }
 }
 
 char *registerWithBridge()
 {
-// runs on -r from cli.h
+// runs on -r
   char *response;
   char httpbody[256];
   char req[MAXLINE];
@@ -109,16 +97,15 @@ char *registerWithBridge()
     return "registerWithBridge: response is empty";
   }
   else {
-    printf("HUE BRIDGE RESPONSE:\n\n%s\n\n\n", response);
 
     filtertoken = regexMatch(response, "\"username\":\".*\"", 1);
     if (strcmp(filtertoken, "no match") == 0) {
-      return "regex match for token (1) failed";
+      printf("%s\n", "regex match for token (1) failed");
     }
 
     filtertoken = regexMatch(filtertoken, ":.*", 1);
     if (strcmp(filtertoken, "no match") == 0) {
-      return "regex match for token (2) failed";
+      printf("%s\n", "regex match for token (2) failed");
     }
 
     filtertoken += 1;
@@ -132,6 +119,6 @@ char *registerWithBridge()
     fprintf(fp, "#define TOKEN %s\n", filtertoken);
     fclose(fp);
 
-    return "";
+    return response;
   }
 }
