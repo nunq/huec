@@ -5,12 +5,13 @@ still a WIP
 
 ## setup / install
 
-1. run ```make first```
-2. press link button on hue bridge
-3. run ```./hue -r```
-4. run ```make```
+1. put the ip of your hue bridge in config.h
+2. run ```make first```
+3. press link button on hue bridge
+4. run ```./hue -r```
+5. run ```make```
 
-> registration works best, if the delay between step 2 and 3 is small.
+> registration works best, if the delay between step 3 and 4 is small.
 
 after that, you can just run ```make``` if you want to recompile the program.
 
