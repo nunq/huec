@@ -12,6 +12,7 @@ void printhelp()
   -c  hue (0-65535)\n\
   -s  saturation (0-254)\n\
   -r  register with bridge\n\
+  -g  get a property from the api\n\
   -h  show this help\nelse: returns 0\n");
 }
 
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
   }
 
   // handle commandline arguments
-  while ((opt = getopt(argc, argv, "rc:l:b:s:p:")) != -1) {
+  while ((opt = getopt(argc, argv, "rc:l:b:s:p:g:")) != -1) {
    switch (opt) {
    case 'l':
      light = atoi(optarg);
@@ -74,6 +75,17 @@ int main(int argc, char *argv[])
      }
      else {
        printhelp();
+     }
+     break;
+   case 'g':
+     if (argc > 3) {
+       error("-g can only be used alone");
+     }
+     if (strlen(argv[2]) > 10) {
+       printhelp();
+     }
+     else {
+       printf("%s\n", getProp(light, optarg));
      }
      break;
    default:

@@ -23,7 +23,7 @@ char *sendRequest(const char *method, const int light, const char *action, const
   snprintf(req, sizeof(req), "%s /api/%s/lights/%d/%s HTTP/1.0\r\nContent-Length: %d\r\n\r\n%s\r\n", method, TOKEN, light, action, contlen, httpbody);
 
   if (strcmp((response = RequestHandler(req)), "") == 0) {
-    return "sendRequest: response is empty";
+    error("sendRequest(): response from bridge is empty");
   }
   else {
     return response;
@@ -93,7 +93,7 @@ char *registerWithBridge()
   snprintf(req, sizeof(req), "POST /api HTTP/1.0\r\nContent-Length: %d\r\n\r\n%s\r\n", contlen, httpbody);
 
   if (strcmp((response = RequestHandler(req)), "") == 0) {
-    return "registerWithBridge: response is empty";
+    error("registerWithBridge(): response from bridge is empty");
   }
   else {
 
@@ -114,7 +114,7 @@ char *registerWithBridge()
     FILE *fp = fopen(PRIVCONFIGPATH, "w");
 
     if (fp == NULL) {
-      return "fopen failed";
+      error("registerWithBridge(): fopen failed";
     }
 
     fprintf(fp, "#define TOKEN %s\n", filtertoken);

@@ -4,7 +4,7 @@
 
 void error(const char *msg)
 {
-  perror(msg);
+  fprintf(stderr, "ERROR: %s\n", msg);
   exit(-1);
 }
 
@@ -20,7 +20,7 @@ char *regexMatch(const char *source, const char *pattern, const int returnMatche
   if ( (retval = regcomp(&regex, pattern, REG_EXTENDED) != 0)) {
     regerror(retval, &regex, buffer, sizeof(buffer));
     regfree(&regex);
-    return "ERR: regcomp failed";
+    error("regexMatch(): regcomp failed");
   }
 
   retval = regexec(&regex, source, nmatch, pmatch, REG_NOTBOL);
