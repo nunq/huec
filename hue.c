@@ -13,13 +13,7 @@ void printhelp()
   -s  saturation (0-254)\n\
   -r  register with bridge\n\
   -g  get a property from the api\n\
-  -h  show this help\nelse: returns 0\n");
-}
-
-int spawnui()
-{
-  //an ncurses ui is planned
-  return 0;
+  -h  show this help\n");
 }
 
 int main(int argc, char *argv[])
@@ -28,9 +22,8 @@ int main(int argc, char *argv[])
   int light = DEFAULT_LIGHT;
 
   if (argc < 2) {
-    if (spawnui() != 0) {
-      error("Could not spawn ui\n");
-    }
+    printhelp();
+    error("no argument provided");
   }
 
   // handle commandline arguments

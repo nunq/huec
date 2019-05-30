@@ -24,6 +24,7 @@ char *sendRequest(const char *method, const int light, const char *action, const
 
   if (strcmp((response = RequestHandler(req)), "") == 0) {
     error("sendRequest(): response from bridge is empty");
+    return "err"; //isn't going to run, but makes gcc happy
   }
   else {
     return response;
@@ -94,6 +95,7 @@ char *registerWithBridge()
 
   if (strcmp((response = RequestHandler(req)), "") == 0) {
     error("registerWithBridge(): response from bridge is empty");
+    return "err"; //isn't going to run, but makes gcc happy
   }
   else {
 
@@ -114,7 +116,8 @@ char *registerWithBridge()
     FILE *fp = fopen(PRIVCONFIGPATH, "w");
 
     if (fp == NULL) {
-      error("registerWithBridge(): fopen failed";
+      error("registerWithBridge(): fopen failed");
+      return "err"; //isn't going to run, but makes gcc happy
     }
 
     fprintf(fp, "#define TOKEN %s\n", filtertoken);
