@@ -11,6 +11,7 @@ void printhelp()
   -b  brightness (0-254)\n\
   -c  hue (0-65535)\n\
   -s  saturation (0-254)\n\
+  -f  profile (from config.h)\n\
   -r  register with bridge\n\
   -g  get a property from the api\n\
   -h  show this help\n");
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
   }
 
   // handle commandline arguments
-  while ((opt = getopt(argc, argv, "rc:l:b:s:p:g:")) != -1) {
+  while ((opt = getopt(argc, argv, "hrc:l:b:s:p:g:f:")) != -1) {
    switch (opt) {
    case 'l':
      light = atoi(optarg);
@@ -79,6 +80,16 @@ int main(int argc, char *argv[])
      }
      else {
        printf("%s\n", getProp(light, optarg));
+     }
+     break;
+   case 'f':
+     if (atoi(optarg) >= 0 && atoi(optarg) <= (int) (sizeof(profiles)/sizeof(profiles[0]) - 1)) {
+       setProp("PUT", light, "state", "on", "true");
+       for (int i = 0; i < 3; i++) {
+         setProp("PUT", light, "state", profileorder[i], profiles[atoi(optarg)][i]);
+       }
+     } else {
+       error("profile doesn't exist.");
      }
      break;
    default:
