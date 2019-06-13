@@ -1,8 +1,6 @@
 # huec
 a c program to control your hue lights
 
-still a WIP
-
 ## setup / install
 
 1. put the ip of your hue bridge in config.h
