@@ -33,4 +33,4 @@ profiles can be set in config.h using a 2d array
 
 ## other
 
-license: MIT License
+license: GPLv3

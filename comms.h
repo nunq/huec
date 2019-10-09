@@ -7,7 +7,7 @@ char *sendRequest(const char *method, const int light, const char *action, const
 {
   char *response;
   char httpbody[256];
-  char req[MAXLINE];
+  char req[4096];
   int contlen;
 
   // decide if json data should be included in the request
@@ -37,23 +37,23 @@ char *getProp(const int light, const char *property)
   char *source;
   char pattern[32]; //buffer
   int offset = 2;
-  char *patternstr = "\\\"\\\":[^,]*";
+  char *patternstr = "\\\"\\\":[^,]*"; // we need that much escaping because 1. this defintion and later in sendRequest
 
   source = sendRequest("GET", light, "", 1, "", "");
 
   // insert property into pattern buffer
-  strncpy(pattern, patternstr, offset);
-  pattern[offset] = '\0';
-  strcat(pattern, property);
-  strcat(pattern, patternstr + offset);
+  strncpy(pattern, patternstr, offset); // pattern = \"
+  pattern[offset] = '\0'; // pattern = \"\0 , i.e. NULL terminate
+  strcat(pattern, property); // pattern = \"PROPERTY
+  strcat(pattern, patternstr + offset); // pattern = \"PROPERTY\":[^,]*
 
   returned = regexMatch(source, pattern, 1);
 
-  // regex match target json data
+  // regexmatch pattern in the received json data
   if (strcmp(returned, "no match") == 0) {
     return "regex match (1) failed";
   }
-
+  //regexmatch the value (we don't want the key/specifier)
   returned = regexMatch(returned, ":.*", 1);
 
   if (strcmp(returned, "no match") == 0) {
@@ -81,7 +81,7 @@ char *registerWithBridge()
 // runs on -r
   char *response;
   char httpbody[256];
-  char req[MAXLINE];
+  char req[4096];
   int contlen;
   char *filtertoken;
 

@@ -10,7 +10,7 @@
 #include "util.h"
 
 struct sockaddr_in servaddr;
-static char recvdata[MAXLINE];
+static char recvdata[4096];
 static int sockfd;
 
 int createSocket()
@@ -41,7 +41,7 @@ char *RequestHandler(const char *request)
   if ( (w = write(sockfd, request, strlen(request))) != strlen(request))
     error("sending data");
   
-  while ((n = read(sockfd, recvdata, MAXLINE-1)) > 0) {}
+  while ((n = read(sockfd, recvdata, 4095)) > 0) {}
   if (n < 0) {
     error("receiving data");
   }

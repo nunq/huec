@@ -8,6 +8,7 @@ void error(const char *msg)
   exit(-1);
 }
 
+// abstract the regex matching
 char *regexMatch(const char *source, const char *pattern, const int returnMatched)
 {
   char buffer[128];
