@@ -17,20 +17,24 @@ note: if you changed something in the config, you need to recompile for the chan
 ## usage
 ```
 cli options:
--l  light, if not provided use default
--p  1 (on) or 0 (off)
--b  brightness (0-254)
--c  hue (0-65535)
--s  saturation (0-254)
--f  profile (from config.h)
--r  register with bridge
--h  show this help
-else: returns 0
+  -l  light, if not provided use default
+  -p  1 (on) or 0 (off)
+  -b  brightness (0-254)
+  -c  hue (0-65535)
+  -s  saturation (0-254)
+  -f  profile (from config.h)
+  -r  register with bridge
+  -g  get a property from the api (on, sat, bri, hue, ?)
+  -h  show this help
 ```
 ### profiles
 
 profiles can be set in config.h using a 2d array
 
 ## other
+
+the implementation of `-g` is kind of bad (see: valgrind).
+
+most of the files are header files because i didn't know how they worked back then, still won't fix it though, because i'm lazy and it *just works*.
 
 license: GPLv3
