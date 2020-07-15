@@ -1,3 +1,4 @@
 privconfig.h
 vgcore.*
 hue
+*.o

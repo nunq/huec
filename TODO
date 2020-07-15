@@ -1,0 +1,32 @@
+comms.h-6-char *sendRequest(const char *method, const int light, const char *action, const int nojson, const char *property, const char *state)
+comms.h:7:{
+--
+comms.h-34-char *getProp(const int light, const char *property)
+comms.h:35:{
+--
+comms.h-67-int setProp(const char *method, const int light, const char *action, const char *property, const char *state)
+comms.h:68:{
+--
+comms.h-79-char *registerWithBridge()
+comms.h:80:{
+--
+hue.c-6-void printhelp()
+hue.c:7:{
+--
+hue.c-20-int main(int argc, char *argv[])
+hue.c:21:{
+--
+tcphandler.h-16-int createSocket()
+tcphandler.h:17:{
+--
+tcphandler.h-35-char *RequestHandler(const char *request)
+tcphandler.h:36:{
+--
+util.h-5-void error(const char *msg)
+util.h:6:{
+--
+util.h-12-char *regexMatch(const char *source, const char *pattern, const int returnMatched)
+util.h:13:{
+
+
+grep -Han '^{' * -B 1

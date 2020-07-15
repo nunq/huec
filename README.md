@@ -7,7 +7,7 @@ a c program to control your hue lights
 2. run ```make first```
 3. press link button on hue bridge
 4. run ```./hue -r```
-5. run ```make```
+5. run ```make hue```
 
 > registration works best, if the delay between step 3 and 4 is small.
 

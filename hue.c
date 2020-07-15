@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <getopt.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "comms.h"
+#include "tcphandler.h"
+#include "util.h"
+#include "config.h"
+#include "profiles.h"
 
 void printhelp()
 {

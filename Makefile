@@ -1,14 +1,21 @@
 CC=gcc
 CFLAGS=-std=c99 -pipe -pedantic-errors -Wall -Werror -Wextra -Wcast-align -O2
-all: main
+all: help
+.PHONY: clean help
+
+help:
+	@echo "see README.md for more info"
 	
-main: hue.c comms.h config.h privconfig.h tcphandler.h util.h
-	$(CC) $(CFLAGS) -o hue hue.c
+hue: hue.c comms.c config.h privconfig.h tcphandler.c util.c comms.h tcphandler.h util.h
+	$(CC) $(CFLAGS) -c *.c
+	$(CC) $(CFLAGS) -o hue *.o
 
 first: hue.c comms.h config.h tcphandler.h util.h
 	echo "#define TOKEN \"\"" > ./privconfig.h
 	echo "#define PRIVCONFIGPATH \"$(shell pwd)/privconfig.h\"" >> ./config.h
-	$(CC) $(CFLAGS) -o hue hue.c
+	$(CC) $(CFLAGS) -c *.c
+	$(CC) $(CFLAGS) -o hue *.o
 
-clean: hue
-	rm ./hue
+clean:
+	rm -v ./hue
+	rm -v *.o
