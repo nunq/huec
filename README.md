@@ -29,12 +29,8 @@ cli options:
 ```
 ### profiles
 
-profiles can be set in config.h using a 2d array
+profiles can be set in profiles.h using a 2d array
 
 ## other
-
-the implementation of `-g` is kind of bad (see: valgrind).
-
-most of the files are header files because i didn't know how they worked back then, still won't fix it though, because i'm lazy and it *just works*.
 
 license: GPLv3
