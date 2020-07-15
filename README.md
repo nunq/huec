@@ -5,7 +5,7 @@ a c program to control your hue lights
 
 1. put the ip of your hue bridge in config.h
 2. run ```make first```
-3. press link button on hue bridge
+3. press the link button on the hue bridge
 4. run ```./hue -r```
 5. run ```make hue```
 
