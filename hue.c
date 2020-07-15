@@ -12,14 +12,14 @@
 void printhelp()
 {
   printf("cli options:\n\
-  -l  light, if not provided use default\n\
+  -l  light, if not provided uses default\n\
   -p  1 (on) or 0 (off)\n\
   -b  brightness (0-254)\n\
   -c  hue (0-65535)\n\
   -s  saturation (0-254)\n\
   -f  profile (from config.h)\n\
   -r  register with bridge\n\
-  -g  get a property from the api\n\
+  -g  get some info about a light\n\
   -h  show this help\n");
 }
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   }
 
   // handle commandline arguments
-  while ((opt = getopt(argc, argv, "hrc:l:b:s:p:g:f:")) != -1) {
+  while ((opt = getopt(argc, argv, "hrgc:l:b:s:p:f:")) != -1) {
    switch (opt) {
    case 'l':
      light = atoi(optarg);
@@ -78,15 +78,15 @@ int main(int argc, char *argv[])
      }
      break;
    case 'g':
-     if (argc > 3) {
-       error("-g can only be used alone");
-     }
-     if (strlen(argv[2]) > 10) {
-       printhelp();
-     }
-     else {
-       printf("%s\n", getProp(light, optarg));
-     }
+		 char *apidata = sendRequest("GET", light, "", 1, "", "");
+		 printf("is on: %s\n", regexMatch(regexMatch(apidata, "\"on\":[^,]*", 1), ":.*", 1)+1);
+		 printf("brightness: %s\n", regexMatch(regexMatch(apidata, "\"bri\":[^,]*", 1), ":.*", 1)+1);
+		 printf("hue: %s\n", regexMatch(regexMatch(apidata, "\"hue\":[^,]*", 1), ":.*", 1)+1);
+		 printf("saturation: %s\n", regexMatch(regexMatch(apidata, "\"sat\":[^,]*", 1), ":.*", 1)+1);
+		 printf("color temp (only white): %s\n", regexMatch(regexMatch(apidata, "\"ct\":[^,]*", 1), ":.*", 1)+1);
+		 printf("\nname: %s\n", regexMatch(regexMatch(apidata, "\"name\":[^,]*", 1), ":\".*\"", 1)+1);
+		 printf("type: %s\n", regexMatch(regexMatch(apidata, "\"type\":[^,]*", 1), ":.*", 1)+1);
+		 printf("sw version: %s\n", regexMatch(regexMatch(apidata, "\"swversion\":[^,]*", 1), ":.*", 1)+1);
      break;
    case 'f':
      if (atoi(optarg) >= 0 && atoi(optarg) <= (int) (sizeof(profiles)/sizeof(profiles[0]) - 1)) {
