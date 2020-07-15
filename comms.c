@@ -34,39 +34,6 @@ char *sendRequest(const char *method, const int light, const char *action, const
   }
 }
 
-char *getProp(const int light, const char *property)
-{
-  char *returned;
-  char *source;
-  char pattern[32]; //buffer
-  int offset = 2;
-  char *patternstr = "\\\"\\\":[^,]*"; // we need that much escaping because 1. this defintion and later in sendRequest
-
-  source = sendRequest("GET", light, "", 1, "", "");
-
-  // insert property into pattern buffer
-  strncpy(pattern, patternstr, offset); // pattern = \"
-  pattern[offset] = '\0'; // pattern = \"\0 , i.e. NULL terminate
-  strcat(pattern, property); // pattern = \"PROPERTY
-  strcat(pattern, patternstr + offset); // pattern = \"PROPERTY\":[^,]*
-
-  returned = regexMatch(source, pattern, 1);
-
-  // regexmatch pattern in the received json data
-  if (strcmp(returned, "no match") == 0) {
-    return "regex match (1) failed";
-  }
-  //regexmatch the value (we don't want the key/specifier)
-  returned = regexMatch(returned, ":.*", 1);
-
-  if (strcmp(returned, "no match") == 0) {
-    return "regex match (2) failed";
-  }
-  // remove colon from string
-  returned += 1;
-  return returned;
-}
-
 int setProp(const char *method, const int light, const char *action, const char *property, const char *state)
 {
   char *source = sendRequest(method, light, action, 0, property, state);
