@@ -81,10 +81,9 @@ int main(int argc, char *argv[])
    case 'g':
      apidata = sendRequest("GET", light, "", 1, "", "");
      printf("is on: %s\n", regexMatch(regexMatch(apidata, "\"on\":[^,]*", 1), ":.*", 1)+1);
-     printf("brightness: %s\n", regexMatch(regexMatch(apidata, "\"bri\":[^,]*", 1), ":.*", 1)+1);
      printf("hue: %s\n", regexMatch(regexMatch(apidata, "\"hue\":[^,]*", 1), ":.*", 1)+1);
      printf("saturation: %s\n", regexMatch(regexMatch(apidata, "\"sat\":[^,]*", 1), ":.*", 1)+1);
-     printf("color temp (only white): %s\n", regexMatch(regexMatch(apidata, "\"ct\":[^,]*", 1), ":.*", 1)+1);
+     printf("brightness: %s\n", regexMatch(regexMatch(apidata, "\"bri\":[^,]*", 1), ":.*", 1)+1);
      printf("\nname: %s\n", regexMatch(regexMatch(apidata, "\"name\":[^,]*", 1), ":\".*\"", 1)+1);
      printf("type: %s\n", regexMatch(regexMatch(apidata, "\"type\":[^,]*", 1), ":.*", 1)+1);
      printf("sw version: %s\n", regexMatch(regexMatch(apidata, "\"swversion\":[^,]*", 1), ":.*", 1)+1);
