@@ -9,7 +9,7 @@ all: help
 .PHONY: clean help
 
 help:
-	@echo "see README.md for more info"
+	@echo -e "basically,\n1. make first\n2. press the button on the hue bridge\n3. run './hue -r' ASAP\n4. make hue\n\nafter that, you can just run 'make hue'.\nsee README.md for more info."
 	
 hue: $(C_FILES) $(H_FILES) privconfig.h
 	$(CC) $(CFLAGS) -c $(C_FILES)
