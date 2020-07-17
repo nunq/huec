@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-std=c99 -pipe -pedantic-errors -Wall -Werror -Wextra -Wcast-align -O2
 C_FILES=hue.c comms.c tcphandler.c util.c
-H_FILES=config.h comms.h tcphandler.h util.h
+H_FILES=config.h comms.h tcphandler.h util.h profiles.h
 O_FILES=comms.o  hue.o  tcphandler.o  util.o
 BINARY=./hue
 
