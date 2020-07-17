@@ -22,5 +22,5 @@ first: $(C_FILES) $(H_FILES)
 	$(CC) $(CFLAGS) -o $(BINARY) $(O_FILES)
 
 clean:
-	rm -v $(BINARY)
-	rm -v $(O_FILES)
+	@rm -v $(BINARY) || echo "couldn't remove binary. not found."
+	@rm -v $(O_FILES) || echo "couldn't remove object files. not found."
