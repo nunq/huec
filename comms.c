@@ -13,17 +13,19 @@ char *sendRequest(const char *method, const int light, const char *action, const
   char req[4096];
   int contlen;
 
-  // decide if json data should be included in the request
+  // include json data in the http body
   if (nojson == 0) {
     snprintf(httpbody, sizeof(httpbody), "{\"%s\": %s}", property, state);
+
+    contlen = strlen(httpbody);
+    // request builder
+    snprintf(req, sizeof(req), "%s /api/%s/lights/%d/%s HTTP/1.0\r\nContent-Length: %d\r\n\r\n%s\r\n", method, TOKEN, light, action, contlen, httpbody);
+  } else { // dont include, just GET
+    contlen = 0;
+    snprintf(req, sizeof(req), "%s /api/%s/lights/%d/%s HTTP/1.0\r\nContent-Length: %d\r\n\r\n", method, TOKEN, light, action, contlen);
   }
 
-  contlen = strlen(httpbody);
-
   createSocket();
-
-  // request builder
-  snprintf(req, sizeof(req), "%s /api/%s/lights/%d/%s HTTP/1.0\r\nContent-Length: %d\r\n\r\n%s\r\n", method, TOKEN, light, action, contlen, httpbody);
 
   if (strcmp((response = RequestHandler(req)), "") == 0) {
     error("sendRequest(): response from bridge is empty");
