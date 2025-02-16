@@ -1,6 +1,9 @@
 # huec
 a c program to control your hue lights
 
+## NOTE 02-2025
+i just tested this, it still works with my bridge. still,  be careful with this code, i wrote most of it when i was 16. so yeah ...
+
 ## setup / install
 
 1. put the ip of your hue bridge in `config.h`
